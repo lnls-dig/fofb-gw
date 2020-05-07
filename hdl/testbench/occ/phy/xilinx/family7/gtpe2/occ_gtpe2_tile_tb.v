@@ -23,7 +23,7 @@
 
 `timescale 1ns / 1ps
 
-module occ_gtpe2_tb;
+module occ_gtpe2_tile_tb;
 
   //------------
   // Parameters
