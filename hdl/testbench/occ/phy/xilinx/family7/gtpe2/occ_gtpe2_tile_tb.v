@@ -36,15 +36,9 @@ module occ_gtpe2_tile_tb;
   //--------
   // Clocks
   //--------
-  reg mgtrefclk0n = 0;
-  reg mgtrefclk0p = 0;
-  reg mgtrefclk1n = 0;
-  reg mgtrefclk1p = 0;
+  reg mgtrefclk = 0;
   always begin
-    mgtrefclk0n = ~mgtrefclk0n;
-    mgtrefclk0p = ~mgtrefclk0p;
-    mgtrefclk1n = ~mgtrefclk1n;
-    mgtrefclk1p = ~mgtrefclk1p;
+    mgtrefclk = ~mgtrefclk;
     #(REFCLK_PERIOD/2);
   end
 
@@ -81,12 +75,12 @@ module occ_gtpe2_tile_tb;
 //    init_rst = 0;
 //  end
 
-  reg gtpll_rst;
+  reg pll_rst;
   initial
   begin
-    gtpll_rst = 1;
+    pll_rst = 1;
     #(200*INITCLK_PERIOD);
-    gtpll_rst = 0;
+    pll_rst = 0;
   end
 
   reg rxreset, txreset;
@@ -120,6 +114,7 @@ module occ_gtpe2_tile_tb;
   reg [1:0] txcharisk = 2'b10;
   reg [15:0] txdata = 16'hbc95;
 
+  wire usrclk;
   always @(posedge usrclk) begin
     if (counter_data[4:0] == 5'b00000) begin
       txcharisk = 2'b10;
@@ -130,9 +125,7 @@ module occ_gtpe2_tile_tb;
       txdata = counter_data;
     end
     counter_data = counter_data + 1;
-  end
-
-  wire usrclk;
+  end  
 
   reg fail = 0;
   initial
@@ -164,20 +157,16 @@ module occ_gtpe2_tile_tb;
 
   wire txresetdone;
 
-  wire gtpll_locked;
+  wire pll_lock;
   
   occ_gtpe2_tile #(
-    .g_SIM_SPEEDUP    ("FALSE")
+    .g_SIMULATION       ("FALSE")
   )
   cmp_occ_gtpe2_tile (
     .rxn_i              (rxtxn),
     .rxp_i              (rxtxp),
     .txn_o              (rxtxn),
     .txp_o              (rxtxp),
-    .mgtrefclk0n_i      (mgtrefclk0n),
-    .mgtrefclk0p_i      (mgtrefclk0p),
-    .mgtrefclk1n_i      (mgtrefclk1n),
-    .mgtrefclk1p_i      (mgtrefclk1p),
     .rxreset_i          (rxreset),
     .rxresetdone_o      (rxresetdone),
     .rxcharisk_o        (rxcharisk),
@@ -193,15 +182,16 @@ module occ_gtpe2_tile_tb;
     .txcharisk_i        (txcharisk),
     .txdata_i           (txdata),
     .txuserrdy_i        (txuserrdy),
-    .rxpolarity_i       (1'b0),
-    .loopback_i         (3'b000),
-    .rxpowerdown_i      (2'b00),
-    .txpowerdown_i      (2'b00),
-    .gtpll_locked_o     (gtpll_locked),
-    .gtpll_refclksel_i  (3'b001),
-    .gtpll_rst_i        (gtpll_rst),
+    .refclk0_i          (mgtrefclk),
+    .refclk1_i          (mgtrefclk),
     .usrclk_o           (usrclk),
-    .gtpll_lockdetclk_i (init_clk),
+    .loopback_i         (3'b000),
+    .powerdown_i        (2'b00),
+    .pll_lockdetclk_i   (init_clk),
+    .pll_lock_o         (pll_lock),
+    .pll_refclklost_o   (),
+    .pll_refclksel_i    (3'b001),
+    .pll_rst_i          (pll_rst),
     .init_rst_i         (init_rst),
     .init_clk_i         (init_clk)
   );
