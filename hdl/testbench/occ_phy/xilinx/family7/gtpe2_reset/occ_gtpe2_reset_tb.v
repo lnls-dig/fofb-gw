@@ -23,7 +23,7 @@
 
 `timescale 1ns / 1ps
 
-module main;
+module occ_gtpe2_reset_tb;
 
   //------------
   // Parameters
