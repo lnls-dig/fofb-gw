@@ -23,14 +23,14 @@
 
 `timescale 1ns / 1ps
 
-module main;
+module occ_gtpe2_reset_tb;
 
   //------------
   // Parameters
   //------------
   localparam SIM_TIME = 1000000;
   localparam REFCLK_PERIOD = 8.0;
-  localparam USRCLK_PERIOD = REFCLK_PERIOD/2.5;  
+  localparam USRCLK_PERIOD = REFCLK_PERIOD/2.5;
   localparam INITCLK_PERIOD = 10.0;
 
   //--------
@@ -125,7 +125,7 @@ module main;
       txdata = counter_data;
     end
     counter_data = counter_data + 1;
-  end  
+  end
 
   reg fail = 0;
   initial
@@ -158,7 +158,7 @@ module main;
   wire txresetdone;
 
   wire pll_lock;
-  
+
   occ_gtpe2_tile #(
     .g_SIMULATION       ("FALSE")
   )
