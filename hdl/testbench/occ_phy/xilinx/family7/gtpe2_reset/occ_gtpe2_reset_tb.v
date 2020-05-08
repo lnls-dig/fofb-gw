@@ -48,6 +48,18 @@ module occ_gtpe2_reset_tb;
     #(INITCLK_PERIOD/2);
   end
 
+  // ----------------------
+  // Dump varrs to VCD file
+  // ----------------------
+  initial
+  begin
+    if ($test$plusargs("vcd")) begin
+      $display("Dumping signals to VCD file");
+      $dumpfile("occ_gtpe2_reset.vcd");
+      $dumpvars(1, occ_gtpe2_reset_tb);
+    end
+  end
+
   //--------
   // Resets
   //--------
