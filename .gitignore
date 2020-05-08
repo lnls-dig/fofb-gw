@@ -39,3 +39,9 @@ work/
 *.edif
 *.mif
 .Xil/
+
+*.wdb
+*xelab.pb
+*xsim.dir/
+*xvhdl.pb
+*xvlog.pb
