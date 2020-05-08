@@ -20,6 +20,7 @@ hdl/syn/*.runs*
 work/
 *modelsim.ini
 *vish_stacktrace.vstf
+*.vcd
 
 ######################
 # Temporary files
