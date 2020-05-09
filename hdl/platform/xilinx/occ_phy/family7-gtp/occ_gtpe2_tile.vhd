@@ -65,6 +65,7 @@ port
   rxdisperr_o             : out std_logic_vector(1 downto 0);
   rxnotintable_o          : out std_logic_vector(1 downto 0);
   -- Comma Detection and Alignment
+  rxbyteisaligned_o       : out std_logic;
   rxbyterealign_o         : out std_logic;
   rxencommaalign_i        : in  std_logic;
   -- Elastic Buffer
@@ -590,7 +591,7 @@ begin
     RXSYNCMODE                      => '0',
     RXSYNCOUT                       => open,
     -- RX Byte and Word Alignment
-    RXBYTEISALIGNED                 => open, -- INFO: required for manual alignment
+    RXBYTEISALIGNED                 => rxbyteisaligned_o,
     RXBYTEREALIGN                   => rxbyterealign_o,
     RXCOMMADET                      => open, -- INFO: required for manual alignment
     RXCOMMADETEN                    => '1',  -- INFO: '0' for manual alignment
