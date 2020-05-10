@@ -211,7 +211,7 @@ begin
     -- RX Byte and Word Alignment   
     ALIGN_COMMA_DOUBLE              => "FALSE",
     ALIGN_COMMA_ENABLE              => "1111111111",
-    ALIGN_COMMA_WORD                => 2,
+    ALIGN_COMMA_WORD                => 1,
     ALIGN_MCOMMA_DET                => "TRUE",
     ALIGN_MCOMMA_VALUE              => "1010000011", -- -K28.5+ (10-bit symbol)
     ALIGN_PCOMMA_DET                => "TRUE",
