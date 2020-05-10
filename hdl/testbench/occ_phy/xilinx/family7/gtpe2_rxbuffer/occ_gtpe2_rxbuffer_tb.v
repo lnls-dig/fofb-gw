@@ -143,11 +143,11 @@ module main;
 
     if (rxbyteisaligned == 1) begin
       if (cnt_blind > BLIND_PERIOD) begin
-        // cnt_blind is used to ignore the first cycles after the GTP signals
-        // comma alignment has been achieved through the rxbyteisaligned port.
-        // UG482 is not clear about how many clock cycles it takes for data
-        // coming out at the rxdata port is guaranteed to be aligned as indicated
-        // by rxbyteisaligned.
+        // The blind period is used to ignore the first cycles after the GTP
+        // signals that the comma alignment has been achieved through the
+        // rxbyteisaligned port. UG482 is not clear about how many clock cycles
+        // it takes for data coming out at the rxdata port is guaranteed to be
+        // aligned as indicated by rxbyteisaligned.
         if (rxcharisk == 2'b00) begin
           if (right_comma_byte == 1) begin
             // Data is byte-aligned - Receiveing payload
