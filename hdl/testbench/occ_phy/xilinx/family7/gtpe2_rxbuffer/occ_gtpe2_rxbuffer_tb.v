@@ -31,6 +31,7 @@ module main;
   localparam INITCLK_PERIOD = 10.0;             // [ns]
   localparam BLIND_PERIOD = 10;                 // [usrclk cycles]
   localparam PLLRST_PERIOD = 2500;              // [refclk cycles]
+  localparam IDLE_PERIOD = 193;                 // [usrclk cycles]
   localparam NUM_TRIES = 10;
   localparam NUM_SUCCESFUL_DATA = 1000;
   localparam IDLE = 16'hbc95;
@@ -118,13 +119,13 @@ module main;
   always @(posedge usrclk) begin
     // Produce data incremented by 1 in order to allow latency calculation
     // Interleave with IDLE words for comma alignment and clock correction
-    if (cnt_data[4:0] == 5'b00000) begin
-      txcharisk = 2'b10;
-      txdata = IDLE;
+    if (cnt_data % IDLE_PERIOD == 0) begin
+      txcharisk <= 2'b10;
+      txdata <= IDLE;
     end
     else begin
-      txcharisk = 2'b00;
-      txdata = cnt_data;
+      txcharisk <= 2'b00;
+      txdata <= cnt_data;
     end
     cnt_data = cnt_data + 1;
   end
