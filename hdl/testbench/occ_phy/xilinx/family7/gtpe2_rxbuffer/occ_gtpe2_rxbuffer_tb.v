@@ -49,7 +49,7 @@ module main;
   reg [1:0]  txcharisk;
   reg [15:0] txdata;
   reg pll_lock_reg;
-  reg wrong_comma_byte = 0;
+  reg right_comma_byte = 0;
   wire usrclk;
   wire rxtxn, rxtxp;
   wire rxbyteisaligned;
@@ -142,49 +142,47 @@ module main;
     end
 
     if (rxbyteisaligned == 1) begin
-      // cnt_blind is used to ignore the first cycles after the GTP signals
-      // comma alignment has been achieved through the rxbyteisaligned port.
-      // UG482 is not clear about how many clock cycles it takes for data
-      // coming out at the rxdata port is guaranteed to be aligned as indicated
-      // by rxbyteisaligned.
-      if (cnt_blind > BLIND_PERIOD && rxcharisk == 2'b00) begin
-        if (wrong_comma_byte != 1) begin
-          // Data is byte-aligned - Receiveing payload
-          if (txcharisk == 2'b00) begin
-            // When TX and RX data have no K character it is possible to
-            // calculate overall TX-RX latency
-            latency = txdata - rxdata;
-            cnt_succesful_data = cnt_succesful_data + 1;
+      if (cnt_blind > BLIND_PERIOD) begin
+        // cnt_blind is used to ignore the first cycles after the GTP signals
+        // comma alignment has been achieved through the rxbyteisaligned port.
+        // UG482 is not clear about how many clock cycles it takes for data
+        // coming out at the rxdata port is guaranteed to be aligned as indicated
+        // by rxbyteisaligned.
+        if (rxcharisk == 2'b00) begin
+          if (right_comma_byte == 1) begin
+            // Data is byte-aligned - Receiveing payload
+            if (txcharisk == 2'b00) begin
+              // When TX and RX data have no K character it is possible to
+              // calculate overall TX-RX latency - it must be assured the comma
+              // byte alignment have been already performed
+              latency = txdata - rxdata;
+              cnt_succesful_data = cnt_succesful_data + 1;
 
-            // Latency statistics
-            if (latency > latency_max) latency_max = latency;
-            if (latency < latency_min) latency_min = latency;        
+              // Latency statistics
+              if (latency > latency_max) latency_max = latency;
+              if (latency < latency_min) latency_min = latency;        
 
-            if (cnt_succesful_data > NUM_SUCCESFUL_DATA) begin
-              $display("Latency [txuserclk cycles]: %d (min) - %d (max).", latency_min, latency_max);
-              $display("PASS");
-              $finish;
+              if (cnt_succesful_data > NUM_SUCCESFUL_DATA) begin
+                $display("Latency [txuserclk cycles]: %d (min) - %d (max).", latency_min, latency_max);
+                $display("PASS");
+                $finish;
+              end
             end
           end
         end
-      end
-      else if (rxcharisk == 2'b10 && rxdata == IDLE) begin
-        // Data is byte-aligned - Comma in the right byte of an IDLE word
-      end
-      else if (rxcharisk == 2'b01 && rxdata[7:0] == IDLE[15:8]) begin
-        // Data is not byte-aligned - Comma in the wrong byte of an IDLE word
-        if (cnt_blind > BLIND_PERIOD) begin
-          wrong_comma_byte = 1;
-          if (cnt_tries >= NUM_TRIES) begin
-            $display("Wrong comma byte alignment. Number of reset tries: %d.", NUM_TRIES);
-            $display("FAIL");
-            $stop;
-          end
+        else if (rxcharisk == 2'b10 && rxdata == IDLE) begin
+          // Data is byte-aligned - Comma in the right byte of an IDLE word
+          right_comma_byte = 1;
         end
-      end
-      else begin
-        if (cnt_blind > BLIND_PERIOD) begin
-          wrong_comma_byte = 1;
+        else if (rxcharisk == 2'b01 && rxdata[7:0] == IDLE[15:8]) begin
+          // Data is not byte-aligned - Comma in the wrong byte of an IDLE word
+            if (cnt_tries >= NUM_TRIES) begin
+              $display("Wrong comma byte alignment. Number of reset tries: %d.", NUM_TRIES);
+              $display("FAIL");
+              $stop;
+            end
+        end
+        else begin
           if (cnt_tries >= NUM_TRIES) begin
             $display("Unknown comma misalignment. Number of reset tries: %d.", NUM_TRIES);
             $display("FAIL");
@@ -196,7 +194,7 @@ module main;
     end
     else begin
       cnt_blind = 0;
-      wrong_comma_byte = 0;
+      right_comma_byte = 0;
     end
   end
 
