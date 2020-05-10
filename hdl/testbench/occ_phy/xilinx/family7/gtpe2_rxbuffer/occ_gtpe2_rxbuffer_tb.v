@@ -26,14 +26,14 @@ module main;
   //------------
   // Parameters
   //------------
-  localparam REFCLK_PERIOD = 8.0;
-  localparam USRCLK_PERIOD = REFCLK_PERIOD/2.5;  
-  localparam INITCLK_PERIOD = 10.0;
-  localparam IDLE = 16'hbc95;
-  localparam BLIND_PERIOD = 10;
+  localparam REFCLK_PERIOD = 8.0;               // [ns]
+  localparam USRCLK_PERIOD = REFCLK_PERIOD/2.5; // [ns]
+  localparam INITCLK_PERIOD = 10.0;             // [ns]
+  localparam BLIND_PERIOD = 10;                 // [usrclk cycles]
+  localparam PLLRST_PERIOD = 2500;              // [refclk cycles]
   localparam NUM_TRIES = 10;
   localparam NUM_SUCCESFUL_DATA = 1000;
-  localparam PLLRST_PERIOD = 2500;
+  localparam IDLE = 16'hbc95;
 
   //---------
   // Signals
