@@ -123,7 +123,7 @@ module main;
   //-------------------
   // Design validation
   //-------------------
-  rxbuffer_checker #
+  latency_checker #
   (
     .g_IDLE                 (IDLE),
     .g_IDLE_PERIOD          (IDLE_PERIOD),
