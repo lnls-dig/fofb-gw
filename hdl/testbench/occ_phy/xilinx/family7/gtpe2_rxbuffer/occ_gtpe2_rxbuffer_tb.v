@@ -45,11 +45,10 @@ module main;
   reg txreset = 0;
   reg rxuserrdy = 1;
   reg txuserrdy = 1;
-  reg rxencommaalign;
-  reg [1:0]  txcharisk;
-  reg [15:0] txdata;
+  wire rxencommaalign;
+  wire [1:0]  txcharisk;
+  wire [15:0] txdata;
   reg pll_lock_reg;
-  reg right_comma_byte = 0;
   wire usrclk;
   wire rxtxn, rxtxp;
   wire rxbyteisaligned;
@@ -59,15 +58,12 @@ module main;
   wire rxresetdone;
   wire txresetdone;
   wire pll_lock;
-
-  integer latency = 0;
-  integer latency_min = 100000;
-  integer latency_max = 0;
-
-  integer cnt_data = 0;
-  integer cnt_blind = 0;
-  integer cnt_tries = 1;
-  integer cnt_succesful_data = 0;
+  wire rdy;
+  wire fail;
+  
+  wire [31:0] latency_min;
+  wire [31:0] latency_max;
+  integer cnt_tries;
   
   //--------
   // Clocks
@@ -77,18 +73,27 @@ module main;
     #(REFCLK_PERIOD/2);
   end
 
-  //--------
-  // Resets
-  //--------
+  //-------------------------------
+  // Resets and Simulation control
+  //------------------------------
   initial begin
-    // Keep reseting the whole system and tracking number of tries
-    forever begin
+    // Keep reseting the whole design by NUM_TRIES times
+    for (cnt_tries = 1; cnt_tries <= NUM_TRIES; cnt_tries = cnt_tries + 1) begin
+      $display("Reset try #%.3d...", cnt_tries);
+
       pll_rst = 1;
       #(200*REFCLK_PERIOD);
       pll_rst = 0;
       #((PLLRST_PERIOD-200)*REFCLK_PERIOD);
-      cnt_tries = cnt_tries + 1;
+
+      if (!fail) begin
+        $display("Latency [txuserclk cycles]: %d (min) - %d (max).", latency_min, latency_max);
+        $display("PASS");
+        $finish;
+      end
     end
+    $display("FAIL");
+    $finish;
   end
 
   //--------------------
@@ -113,90 +118,34 @@ module main;
     end
   end
 
-  //-----------------
-  // Data generation
-  //-----------------
-  always @(posedge usrclk) begin
-    // Produce data incremented by 1 in order to allow latency calculation
-    // Interleave with IDLE words for comma alignment and clock correction
-    if (cnt_data % IDLE_PERIOD == 0) begin
-      txcharisk <= 2'b10;
-      txdata <= IDLE;
-    end
-    else begin
-      txcharisk <= 2'b00;
-      txdata <= cnt_data;
-    end
-    cnt_data = cnt_data + 1;
-  end
+  assign rdy = rxuserrdy && txuserrdy && rxresetdone && txresetdone;
 
   //-------------------
   // Design validation
   //-------------------
-  always @(posedge usrclk) begin
-    if (rxuserrdy == 1 && txuserrdy == 1 && rxresetdone == 1 && txresetdone == 1) begin
-      rxencommaalign <= 1;
-    end
-    else if (rxuserrdy == 0 || txuserrdy == 0 || rxbyteisaligned == 1) begin
-      rxencommaalign <= 0;
-    end
-
-    if (rxbyteisaligned == 1) begin
-      if (cnt_blind > BLIND_PERIOD) begin
-        // The blind period is used to ignore the first cycles after the GTP
-        // signals that the comma alignment has been achieved through the
-        // rxbyteisaligned port. UG482 is not clear about how many clock cycles
-        // it takes for data coming out at the rxdata port is guaranteed to be
-        // aligned as indicated by rxbyteisaligned.
-        if (rxcharisk == 2'b00) begin
-          if (right_comma_byte == 1) begin
-            // Data is byte-aligned - Receiveing payload
-            if (txcharisk == 2'b00) begin
-              // When TX and RX data have no K character it is possible to
-              // calculate overall TX-RX latency - it must be assured the comma
-              // byte alignment have been already performed
-              latency = txdata - rxdata;
-              cnt_succesful_data = cnt_succesful_data + 1;
-
-              // Latency statistics
-              if (latency > latency_max) latency_max = latency;
-              if (latency < latency_min) latency_min = latency;        
-
-              if (cnt_succesful_data > NUM_SUCCESFUL_DATA) begin
-                $display("Latency [txuserclk cycles]: %d (min) - %d (max).", latency_min, latency_max);
-                $display("PASS");
-                $finish;
-              end
-            end
-          end
-        end
-        else if (rxcharisk == 2'b10 && rxdata == IDLE) begin
-          // Data is byte-aligned - Comma in the right byte of an IDLE word
-          right_comma_byte = 1;
-        end
-        else if (rxcharisk == 2'b01 && rxdata[7:0] == IDLE[15:8]) begin
-          // Data is not byte-aligned - Comma in the wrong byte of an IDLE word
-            if (cnt_tries >= NUM_TRIES) begin
-              $display("Wrong comma byte alignment. Number of reset tries: %d.", NUM_TRIES);
-              $display("FAIL");
-              $stop;
-            end
-        end
-        else begin
-          if (cnt_tries >= NUM_TRIES) begin
-            $display("Unknown comma misalignment. Number of reset tries: %d.", NUM_TRIES);
-            $display("FAIL");
-            $stop;
-          end
-        end
-      end
-      cnt_blind = cnt_blind + 1;
-    end
-    else begin
-      cnt_blind = 0;
-      right_comma_byte = 0;
-    end
-  end
+  rxbuffer_checker #
+  (
+    .g_IDLE                 (IDLE),
+    .g_IDLE_PERIOD          (IDLE_PERIOD),
+    .g_NUM_TRIES            (NUM_TRIES),
+    .g_BLIND_PERIOD         (BLIND_PERIOD),
+    .g_NUM_SUCCESFUL_DATA   (NUM_SUCCESFUL_DATA)
+  )
+  cmp_latency_checker
+  (
+    .fail_o             (fail),
+    .usrclk_i           (usrclk),
+    .valid_i            (rdy),
+    .rx_data_i          (rxdata),
+    .rx_k_i             (rxcharisk),
+    .tx_data_i          (txdata),
+    .tx_k_i             (txcharisk),
+    .rx_realign_o       (rxencommaalign),
+    .rx_aligned_o       (rxbyteisaligned),
+    .rx_bufstatus_i     (rxbufstatus),
+    .latency_min_o      (latency_min),
+    .latency_max_o      (latency_max)
+  );
 
   // ----
   // DUT 
