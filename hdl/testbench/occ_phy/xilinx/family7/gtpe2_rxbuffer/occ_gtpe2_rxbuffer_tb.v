@@ -58,7 +58,7 @@ module main;
   wire rxresetdone;
   wire txresetdone;
   wire pll_lock;
-  wire rdy;
+  reg rdy;
   wire fail;
   
   wire [31:0] latency_min;
@@ -116,9 +116,9 @@ module main;
       rxuserrdy <= 0;
       txuserrdy <= 0;
     end
-  end
 
-  assign rdy = rxuserrdy && txuserrdy && rxresetdone && txresetdone;
+    rdy <= rxuserrdy && txuserrdy && rxresetdone && txresetdone;
+  end
 
   //-------------------
   // Design validation
