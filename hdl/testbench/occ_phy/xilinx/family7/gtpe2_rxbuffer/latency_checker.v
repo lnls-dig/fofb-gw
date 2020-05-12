@@ -31,15 +31,21 @@ module latency_checker #
   always @(posedge usrclk_i) begin
     // Produce data incremented by 1 in order to allow latency calculation
     // Interleave with IDLE words for comma alignment and clock correction
-    if (cnt_data % g_IDLE_PERIOD == 0) begin
+    if (!valid_i) begin
       tx_k_i <= 2'b10;
       tx_data_i <= g_IDLE;
+      cnt_data = 0;
+    end
+    else if (cnt_data % g_IDLE_PERIOD == 0) begin
+      tx_k_i <= 2'b10;
+      tx_data_i <= g_IDLE;
+      cnt_data = cnt_data + 1;
     end
     else begin
       tx_k_i <= 2'b00;
       tx_data_i <= cnt_data;
-    end
-    cnt_data = cnt_data + 1;
+      cnt_data = cnt_data + 1;
+    end    
   end
 
   // Validation
