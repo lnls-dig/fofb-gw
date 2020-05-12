@@ -26,6 +26,7 @@ module latency_checker #
 
   reg [15:0] latency;
   reg [15:0] current_time;
+  reg [15:0] cnt_idle = 0;
 
   // Data generation
   always @(posedge usrclk_i) begin
@@ -33,18 +34,19 @@ module latency_checker #
     current_time <= $time % 2**16;
 
     // Interleave with IDLE words for comma alignment and clock correction
+    cnt_idle <= cnt_idle + 1;
     if (!valid_i) begin
       tx_k_o <= 2'b10;
       tx_data_o <= g_IDLE;
     end
-    else if (cnt_data % g_IDLE_PERIOD == 0) begin
+    else if (cnt_idle % g_IDLE_PERIOD == 0) begin
       tx_k_o <= 2'b10;
       tx_data_o <= g_IDLE;
     end
     else begin
       tx_k_o <= 2'b00;
       tx_data_o <= current_time;
-    end    
+    end
   end
 
   // Validation
