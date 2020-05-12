@@ -11,10 +11,10 @@ module latency_checker #
   input wire        valid_i,
   input wire [15:0] rx_data_i,
   input wire [1:0]  rx_k_i,
-  output reg [15:0] tx_data_i,
-  output reg [1:0]  tx_k_i,
+  output reg [15:0] tx_data_o,
+  output reg [1:0]  tx_k_o,
   output reg        rx_realign_o,
-  input wire        rx_aligned_o,
+  input wire        rx_aligned_i,
   input wire [2:0]  rx_bufstatus_i,
   output integer    latency_min_o = 2**31-1,
   output integer    latency_max_o = 0
