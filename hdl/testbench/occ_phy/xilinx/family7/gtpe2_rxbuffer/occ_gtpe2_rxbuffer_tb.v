@@ -103,7 +103,7 @@ module main;
       pll_rst1 = 0;
       #((PLLRST_PERIOD-200)*REFCLK0_PERIOD);
 
-      if (!fail0 || !fail1) begin
+      if (!fail0 && !fail1) begin
         $display("TX1-RX0 latency [txuserclk0 cycles]: %d (min) - %d (max).", latency_min0, latency_max0);
         $display("TX0-RX1 latency [txuserclk1 cycles]: %d (min) - %d (max).", latency_min1, latency_max1);
         $display("PASS");
