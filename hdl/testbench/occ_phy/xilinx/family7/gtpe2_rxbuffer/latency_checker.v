@@ -34,16 +34,16 @@ module latency_checker #
 
     // Interleave with IDLE words for comma alignment and clock correction
     if (!valid_i) begin
-      tx_k_i <= 2'b10;
-      tx_data_i <= g_IDLE;
+      tx_k_o <= 2'b10;
+      tx_data_o <= g_IDLE;
     end
     else if (cnt_data % g_IDLE_PERIOD == 0) begin
-      tx_k_i <= 2'b10;
-      tx_data_i <= g_IDLE;
+      tx_k_o <= 2'b10;
+      tx_data_o <= g_IDLE;
     end
     else begin
-      tx_k_i <= 2'b00;
-      tx_data_i <= current_time;
+      tx_k_o <= 2'b00;
+      tx_data_o <= current_time;
     end    
   end
 
@@ -52,11 +52,11 @@ module latency_checker #
     if (valid_i) begin
       rx_realign_o <= 1;
     end
-    else if (!valid_i || rx_aligned_o == 1) begin
+    else if (!valid_i || rx_aligned_i == 1) begin
       rx_realign_o <= 0;
     end
 
-    if (rx_aligned_o == 1) begin
+    if (rx_aligned_i == 1) begin
       if (cnt_blind > g_BLIND_PERIOD) begin
         // The blind period is used to ignore the first cycles after the GT
         // signals comma alignment has been achieved. For instance, for GTP
