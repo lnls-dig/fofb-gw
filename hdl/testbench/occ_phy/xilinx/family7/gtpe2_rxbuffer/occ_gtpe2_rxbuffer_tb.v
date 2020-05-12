@@ -21,6 +21,8 @@
 
 `timescale 1ns / 1ps
 
+`include "latency_checker.v"
+
 module main;
 
   //------------
