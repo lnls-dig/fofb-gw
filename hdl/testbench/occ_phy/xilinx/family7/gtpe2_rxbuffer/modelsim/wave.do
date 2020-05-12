@@ -1,35 +1,65 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
-add wave -noupdate -divider Clocks
-add wave -noupdate /main/refclk
-add wave -noupdate /main/usrclk
-add wave -noupdate -divider {Reset Sequence}
-add wave -noupdate /main/pll_rst
-add wave -noupdate /main/pll_lock
-add wave -noupdate /main/rxreset
-add wave -noupdate /main/txreset
-add wave -noupdate /main/rxuserrdy
-add wave -noupdate /main/txuserrdy
-add wave -noupdate /main/rxresetdone
-add wave -noupdate /main/txresetdone
-add wave -noupdate /main/rdy
-add wave -noupdate -divider {Comma Alignment}
-add wave -noupdate /main/rxencommaalign
-add wave -noupdate /main/rxbyteisaligned
-add wave -noupdate -divider Data
-add wave -noupdate -radix binary /main/txcharisk
-add wave -noupdate -radix hexadecimal /main/txdata
-add wave -noupdate -radix binary -childformat {{{/main/rxcharisk[1]} -radix hexadecimal} {{/main/rxcharisk[0]} -radix hexadecimal}} -subitemconfig {{/main/rxcharisk[1]} {-height 17 -radix hexadecimal} {/main/rxcharisk[0]} {-height 17 -radix hexadecimal}} /main/rxcharisk
-add wave -noupdate -radix hexadecimal /main/rxdata
-add wave -noupdate -divider {Error Status}
-add wave -noupdate -radix binary /main/rxbufstatus
-add wave -noupdate -radix binary /main/rxdisperr
-add wave -noupdate -radix binary /main/rxnotintable
-add wave -noupdate -divider {Design Validation}
+add wave -noupdate -divider {Clocks #0}
+add wave -noupdate /main/refclk0
+add wave -noupdate /main/usrclk0
+add wave -noupdate -divider {Reset Sequence #0}
+add wave -noupdate /main/pll_rst0
+add wave -noupdate /main/pll_lock0
+add wave -noupdate /main/rxreset0
+add wave -noupdate /main/txreset0
+add wave -noupdate /main/rxuserrdy0
+add wave -noupdate /main/txuserrdy0
+add wave -noupdate /main/rxresetdone0
+add wave -noupdate /main/txresetdone0
+add wave -noupdate /main/rdy0
+add wave -noupdate -divider {Comma Alignment #0}
+add wave -noupdate /main/rxencommaalign0
+add wave -noupdate /main/rxbyteisaligned0
+add wave -noupdate -divider {Data #0}
+add wave -noupdate -radix binary /main/txcharisk0
+add wave -noupdate -radix hexadecimal /main/txdata0
+add wave -noupdate -radix binary /main/rxcharisk0
+add wave -noupdate -radix hexadecimal /main/rxdata0
+add wave -noupdate -divider {Error Status #0}
+add wave -noupdate -radix binary /main/rxbufstatus0
+add wave -noupdate -radix binary /main/rxdisperr0
+add wave -noupdate -radix binary /main/rxnotintable0
+add wave -noupdate -divider {Design Validation #0}
+add wave -noupdate -radix decimal /main/latency_min0
+add wave -noupdate -radix decimal /main/latency_max0
+add wave -noupdate /main/fail0
+add wave -noupdate -divider {Clocks #1}
+add wave -noupdate /main/refclk1
+add wave -noupdate /main/usrclk1
+add wave -noupdate -divider {Reset Sequence #1}
+add wave -noupdate /main/pll_rst1
+add wave -noupdate /main/pll_lock1
+add wave -noupdate /main/rxreset1
+add wave -noupdate /main/txreset1
+add wave -noupdate /main/rxuserrdy1
+add wave -noupdate /main/txuserrdy1
+add wave -noupdate /main/rxresetdone1
+add wave -noupdate /main/txresetdone1
+add wave -noupdate /main/rdy1
+add wave -noupdate -divider {Comma Alignment #1}
+add wave -noupdate /main/rxencommaalign1
+add wave -noupdate /main/rxbyteisaligned1
+add wave -noupdate -divider {Data #1}
+add wave -noupdate -radix binary /main/txcharisk1
+add wave -noupdate -radix hexadecimal /main/txdata1
+add wave -noupdate -radix binary /main/rxcharisk1
+add wave -noupdate -radix hexadecimal /main/rxdata1
+add wave -noupdate -divider {Error Status #1}
+add wave -noupdate -radix binary /main/rxbufstatus1
+add wave -noupdate -radix binary /main/rxdisperr1
+add wave -noupdate -radix binary /main/rxnotintable1
+add wave -noupdate -divider {Design Validation #1}
+add wave -noupdate -radix decimal /main/latency_min1
+add wave -noupdate -radix decimal /main/latency_max1
+add wave -noupdate /main/fail1
+add wave -noupdate -divider {Design Validation (General)}
 add wave -noupdate -radix decimal /main/cnt_tries
-add wave -noupdate -radix decimal /main/latency_min
-add wave -noupdate -radix decimal /main/latency_max
-add wave -noupdate /main/fail
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {3578778135 fs} 0}
 quietly wave cursor active 1
