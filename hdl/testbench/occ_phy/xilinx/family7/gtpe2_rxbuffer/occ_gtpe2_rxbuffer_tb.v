@@ -71,8 +71,8 @@ module main;
   reg         rdy0,                 rdy1;
   wire        fail0,                fail1;
   
-  wire [31:0] latency_min0,         latency_min1;
-  wire [31:0] latency_max0,         latency_max1;
+  wire [15:0] latency_min0,         latency_min1;
+  wire [15:0] latency_max0,         latency_max1;
 
   integer     cnt_tries;
   

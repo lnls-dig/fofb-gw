@@ -16,8 +16,8 @@ module latency_checker #
   output reg        rx_realign_o,
   input wire        rx_aligned_i,
   input wire [2:0]  rx_bufstatus_i,
-  output integer    latency_min_o = 2**31-1,
-  output integer    latency_max_o = 0
+  output reg [15:0] latency_min_o = 2**16-1,
+  output reg [15:0] latency_max_o = 0
 );
 
   reg     right_comma_byte = 0;
@@ -25,7 +25,7 @@ module latency_checker #
   integer cnt_blind = 0;
   integer cnt_succesful_data = 0;
 
-  integer latency;
+  reg [15:0] latency;
 
   // Data generation
   always @(posedge usrclk_i) begin
