@@ -185,7 +185,6 @@ module main;
   (
     .g_IDLE                 (IDLE),
     .g_IDLE_PERIOD          (IDLE_PERIOD),
-    .g_NUM_TRIES            (NUM_TRIES),
     .g_BLIND_PERIOD         (BLIND_PERIOD),
     .g_NUM_SUCCESFUL_DATA   (NUM_SUCCESFUL_DATA)
   )
