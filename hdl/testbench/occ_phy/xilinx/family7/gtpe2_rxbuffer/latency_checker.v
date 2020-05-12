@@ -35,11 +35,7 @@ module latency_checker #
 
     // Interleave with IDLE words for comma alignment and clock correction
     cnt_idle <= cnt_idle + 1;
-    if (!valid_i) begin
-      tx_k_o <= 2'b10;
-      tx_data_o <= g_IDLE;
-    end
-    else if (cnt_idle % g_IDLE_PERIOD == 0) begin
+    if (!valid_i || cnt_idle % g_IDLE_PERIOD == 0) begin
       tx_k_o <= 2'b10;
       tx_data_o <= g_IDLE;
     end
@@ -51,12 +47,7 @@ module latency_checker #
 
   // Validation
   always @(posedge usrclk_i) begin
-    if (valid_i) begin
-      rx_realign_o <= 1;
-    end
-    else if (!valid_i || rx_aligned_i == 1) begin
-      rx_realign_o <= 0;
-    end
+    rx_realign_o <= valid_i && rx_aligned_i == 0;
 
     if (rx_aligned_i == 1) begin
       if (cnt_blind > g_BLIND_PERIOD) begin
@@ -86,11 +77,9 @@ module latency_checker #
           // Data is byte-aligned - Comma in the right byte of an IDLE word
           right_comma_byte = 1;
         end
-        else if (rx_k_i == 2'b01 && rx_data_i[7:0] == g_IDLE[15:8]) begin
-          // Data is not byte-aligned - Comma in the wrong byte of an IDLE word
-          fail_o <= 1;
-        end
         else begin
+          // Data is not byte-aligned - Comma in the wrong byte of an IDLE word
+          // or any non-expected K character in the data stream
           fail_o <= 1;
         end
       end
