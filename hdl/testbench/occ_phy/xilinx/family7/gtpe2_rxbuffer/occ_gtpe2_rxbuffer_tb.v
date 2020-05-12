@@ -95,9 +95,8 @@ module main;
     // Keep reseting the whole design by NUM_TRIES times
     for (cnt_tries = 1; cnt_tries <= NUM_TRIES; cnt_tries = cnt_tries + 1) begin
       $display("Reset try #%.3d...", cnt_tries);
-
-      pll_rst0 = 1;
-      pll_rst1 = 1;
+      if (fail0) pll_rst0 = 1;
+      if (fail1) pll_rst1 = 1;
       #(200*REFCLK0_PERIOD);
       pll_rst0 = 0;
       pll_rst1 = 0;

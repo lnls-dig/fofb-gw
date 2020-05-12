@@ -6,7 +6,7 @@ module latency_checker #
   parameter g_NUM_SUCCESFUL_DATA  = 1000
 )
 (
-  output reg        fail_o = 0,
+  output reg        fail_o = 1,
   input wire        usrclk_i,
   input wire        valid_i,
   input wire [15:0] rx_data_i,
@@ -94,7 +94,7 @@ module latency_checker #
       cnt_blind = cnt_blind + 1;
     end
     else begin
-      fail_o <= 0;
+      fail_o <= 1;
       cnt_blind = 0;
       right_comma_byte = 0;
     end
