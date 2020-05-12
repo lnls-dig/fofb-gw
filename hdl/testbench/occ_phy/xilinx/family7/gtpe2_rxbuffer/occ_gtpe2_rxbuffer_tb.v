@@ -39,6 +39,7 @@ module main;
   localparam NUM_TRIES = 10;
   localparam NUM_SUCCESFUL_DATA = 1000;
   localparam IDLE = 16'hbc95;
+  localparam IDLE_K = 2'b10;
   localparam SIMULATION = "TRUE";
   localparam SIMULATION_SPEEDUP = "TRUE";
 
@@ -160,6 +161,7 @@ module main;
   latency_checker #
   (
     .g_IDLE                 (IDLE),
+    .g_IDLE_K               (IDLE_K),
     .g_IDLE_PERIOD          (IDLE_PERIOD),
     .g_BLIND_PERIOD         (BLIND_PERIOD),
     .g_NUM_SUCCESFUL_DATA   (NUM_SUCCESFUL_DATA)
@@ -183,6 +185,7 @@ module main;
   latency_checker #
   (
     .g_IDLE                 (IDLE),
+    .g_IDLE_K               (IDLE_K),
     .g_IDLE_PERIOD          (IDLE_PERIOD),
     .g_BLIND_PERIOD         (BLIND_PERIOD),
     .g_NUM_SUCCESFUL_DATA   (NUM_SUCCESFUL_DATA)

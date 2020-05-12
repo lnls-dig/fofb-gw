@@ -1,6 +1,7 @@
 module latency_checker #
 (
   parameter g_IDLE                = 16'hbc95,
+  parameter g_IDLE_K              = 2'b10,
   parameter g_IDLE_PERIOD         = 193,
   parameter g_BLIND_PERIOD        = 10,
   parameter g_NUM_SUCCESFUL_DATA  = 1000
@@ -36,7 +37,7 @@ module latency_checker #
     // Interleave with IDLE words for comma alignment and clock correction
     cnt_idle <= cnt_idle + 1;
     if (!valid_i || cnt_idle % g_IDLE_PERIOD == 0) begin
-      tx_k_o <= 2'b10;
+      tx_k_o <= g_IDLE_K;
       tx_data_o <= g_IDLE;
     end
     else begin
@@ -73,7 +74,7 @@ module latency_checker #
             end
           end
         end
-        else if (rx_k_i == 2'b10 && rx_data_i == g_IDLE) begin
+        else if (rx_k_i == g_IDLE_K && rx_data_i == g_IDLE) begin
           // Data is byte-aligned - Comma in the right byte of an IDLE word
           right_comma_byte = 1;
         end
