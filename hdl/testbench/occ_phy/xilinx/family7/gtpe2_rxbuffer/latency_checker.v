@@ -21,30 +21,29 @@ module latency_checker #
 );
 
   reg     right_comma_byte = 0;
-  integer cnt_data = 0;
   integer cnt_blind = 0;
   integer cnt_succesful_data = 0;
 
   reg [15:0] latency;
+  reg [15:0] current_time;
 
   // Data generation
   always @(posedge usrclk_i) begin
-    // Produce data incremented by 1 in order to allow latency calculation
+    // Send timestamps on TX data in order to allow for latency calculation
+    current_time <= $time % 2**16;
+
     // Interleave with IDLE words for comma alignment and clock correction
     if (!valid_i) begin
       tx_k_i <= 2'b10;
       tx_data_i <= g_IDLE;
-      cnt_data = 0;
     end
     else if (cnt_data % g_IDLE_PERIOD == 0) begin
       tx_k_i <= 2'b10;
       tx_data_i <= g_IDLE;
-      cnt_data = cnt_data + 1;
     end
     else begin
       tx_k_i <= 2'b00;
-      tx_data_i <= cnt_data;
-      cnt_data = cnt_data + 1;
+      tx_data_i <= current_time;
     end    
   end
 
@@ -67,21 +66,17 @@ module latency_checker #
         if (rx_k_i == 2'b00) begin
           if (right_comma_byte == 1) begin
             // Data is byte-aligned - Receiveing payload
-            if (tx_k_i == 2'b00) begin
-              // When TX and RX data have no K character it is possible to
-              // calculate overall TX-RX latency
-              // right_comma_byte == 1 assures the comma byte alignment have
-              // been already performed
-              latency = tx_data_i - rx_data_i;
-              cnt_succesful_data = cnt_succesful_data + 1;
+            // right_comma_byte == 1 assures the comma byte alignment have been
+            // already performed
+            latency = current_time - rx_data_i;
+            cnt_succesful_data = cnt_succesful_data + 1;
 
-              // Latency statistics
-              if (latency > latency_max_o) latency_max_o = latency;
-              if (latency < latency_min_o) latency_min_o = latency;        
+            // Latency statistics
+            if (latency > latency_max_o) latency_max_o = latency;
+            if (latency < latency_min_o) latency_min_o = latency;        
 
-              if (cnt_succesful_data > g_NUM_SUCCESFUL_DATA) begin
-                fail_o <= 0;
-              end
+            if (cnt_succesful_data > g_NUM_SUCCESFUL_DATA) begin
+              fail_o <= 0;
             end
           end
         end
