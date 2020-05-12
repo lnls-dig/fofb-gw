@@ -19,7 +19,7 @@
 // for applicable conditions.
 //-----------------------------------------------------------------------------
 
-`timescale 1ns / 1ps
+`timescale 1ns / 100fs
 
 `include "latency_checker.v"
 
