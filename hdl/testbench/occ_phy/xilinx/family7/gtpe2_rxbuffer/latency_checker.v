@@ -90,6 +90,7 @@ module latency_checker #
         else begin
           // Data is not byte-aligned - Comma in the wrong byte of an IDLE word
           // or any non-expected K character in the data stream
+          if (fail_comma == 0) $display("Wrong comma alignment. First detected at %d ns.", $time);
           fail_comma <= 1;
         end
       end
