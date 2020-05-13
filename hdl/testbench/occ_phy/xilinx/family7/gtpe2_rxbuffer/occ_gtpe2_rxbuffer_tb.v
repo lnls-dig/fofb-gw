@@ -38,8 +38,8 @@ module main;
   localparam IDLE_PERIOD = 193;                   // [usrclk cycles]
   localparam NUM_TRIES = 10;
   localparam NUM_SUCCESFUL_DATA = 1000;
-  localparam IDLE = 16'hbc95;
-  localparam IDLE_K = 2'b10;
+  localparam IDLE = 16'h95bc;
+  localparam IDLE_K = 2'b01;
   localparam SIMULATION = "TRUE";
   localparam SIMULATION_SPEEDUP = "TRUE";
 
