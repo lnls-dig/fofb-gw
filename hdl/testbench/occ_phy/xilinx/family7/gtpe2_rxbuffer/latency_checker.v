@@ -7,7 +7,7 @@ module latency_checker #
   parameter g_NUM_SUCCESFUL_DATA  = 1000
 )
 (
-  output reg        fail_o = 1,
+  output wire       fail_o,
   input wire        usrclk_i,
   input wire        valid_i,
   input wire [15:0] rx_data_i,
@@ -29,6 +29,9 @@ module latency_checker #
   reg [15:0] current_time;
   reg [15:0] cnt_idle = 0;
 
+  reg fail_comma = 0;
+  reg fail_data = 1;
+
   // Data generation
   always @(posedge usrclk_i) begin
     // Send timestamps on TX data in order to allow for latency calculation
@@ -47,6 +50,8 @@ module latency_checker #
   end
 
   // Validation
+  assign fail_o = fail_comma || fail_data;
+
   always @(posedge usrclk_i) begin
     rx_realign_o <= valid_i && rx_aligned_i == 0;
 
@@ -70,7 +75,7 @@ module latency_checker #
             if (latency < latency_min_o) latency_min_o = latency;        
 
             if (cnt_succesful_data > g_NUM_SUCCESFUL_DATA) begin
-              fail_o <= 0;
+              fail_data <= 0;
             end
           end
         end
@@ -81,13 +86,14 @@ module latency_checker #
         else begin
           // Data is not byte-aligned - Comma in the wrong byte of an IDLE word
           // or any non-expected K character in the data stream
-          fail_o <= 1;
+          fail_comma <= 1;
         end
       end
       cnt_blind = cnt_blind + 1;
     end
     else begin
-      fail_o <= 1;
+      fail_comma <= 0;
+      fail_data <= 1;
       cnt_blind = 0;
       right_comma_byte = 0;
     end
