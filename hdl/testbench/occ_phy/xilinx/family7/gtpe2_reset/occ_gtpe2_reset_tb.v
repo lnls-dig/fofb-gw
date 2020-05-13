@@ -77,6 +77,8 @@ module occ_gtpe2_reset_tb;
   assign glbl.GSR = gsr;
   assign glbl.GTS = gts;
 
+  glbl cmp_glbl();
+
   reg init_rst;
 //  initial
 //  begin

@@ -1,5 +1,5 @@
-vlog glbl.v +incdir+"."
-vlog occ_gtpe2_reset_tb.v +incdir+"." +incdir+../../../../../sim
+--vlog glbl.v +incdir+"."
+--vlog occ_gtpe2_reset_tb.v +incdir+"." +incdir+../../../../../sim
 -- make -f Makefile
 -- output log file to file "output.log", set siulation resolution to "fs"
 vsim -l output.log \
