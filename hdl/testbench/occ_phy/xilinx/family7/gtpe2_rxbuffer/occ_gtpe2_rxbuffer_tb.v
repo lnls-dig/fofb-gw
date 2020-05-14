@@ -36,7 +36,7 @@ module main;
   localparam BLIND_PERIOD = 10;                   // [usrclk cycles]
   localparam PLLRST_PERIOD = 2500;                // [refclk cycles]
   localparam IDLE_PERIOD = 193;                   // [usrclk cycles]
-  localparam NUM_TRIES = 10;
+  localparam NUM_TRIES = 1;
   localparam NUM_SUCCESFUL_DATA = 1000;
   localparam IDLE = 16'h95bc;
   localparam IDLE_K = 2'b01;
@@ -95,7 +95,7 @@ module main;
   initial begin
     // Keep reseting the whole design by NUM_TRIES times
     for (cnt_tries = 1; cnt_tries <= NUM_TRIES; cnt_tries = cnt_tries + 1) begin
-      $display("Reset try #%.3d...", cnt_tries);
+      if (cnt_tries > 1) $display("Reset try #%.3d...", cnt_tries);
       if (fail0) pll_rst0 = 1;
       if (fail1) pll_rst1 = 1;
       #(200*REFCLK0_PERIOD);
