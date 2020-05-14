@@ -174,7 +174,8 @@ module occ_gtpe2_reset_tb;
   wire pll_lock;
 
   occ_gtpe2_tile #(
-    .g_SIMULATION       ("FALSE")
+    .g_SIMULATION           ("FALSE"),
+    .g_SIMULATION_SPEEDUP   ("FALSE")
   )
   cmp_occ_gtpe2_tile (
     .rxn_i              (rxtxn),
