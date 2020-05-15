@@ -48,34 +48,35 @@ module main;
   //---------
   reg         refclk0    = 0,       refclk1    = 0;
   reg         pll_rst0   = 0,       pll_rst1   = 0;
+  reg         rdy0       = 0,       rdy1       = 0;
   reg         rxreset0   = 0,       rxreset1   = 0;
   reg         txreset0   = 0,       txreset1   = 0;
   reg         rxuserrdy0 = 0,       rxuserrdy1 = 0;
   reg         txuserrdy0 = 0,       txuserrdy1 = 0;
-  wire        rxencommaalign0,      rxencommaalign1;
-  wire [1:0]  txcharisk0,           txcharisk1;
-  wire [15:0] txdata0,              txdata1;
-  wire        usrclk0,              usrclk1;
-  wire        rxn0, rxp0,           rxn1,rxp1;
-  wire        txn0, txp0,           txn1,txp1;
-  wire        rxbyterealign0,       rxbyterealign1;
-  wire        rxbyteisaligned0,     rxbyteisaligned1;
-  wire [1:0]  rxcharisk0,           rxcharisk1;
-  wire [1:0]  rxdisperr0,           rxdisperr1;
-  wire [1:0]  rxnotintable0,        rxnotintable1;
-  wire [2:0]  rxbufstatus0,         rxbufstatus1;
-  wire [15:0] rxdata0,              rxdata1;
+  wire        pll_lock0,            pll_lock1;
   wire        rxresetdone0,         rxresetdone1;
   wire        txresetdone0,         txresetdone1;
-  wire        pll_lock0,            pll_lock1;
-  reg         rdy0,                 rdy1;
+
+  wire        rxencommaalign0,      rxencommaalign1;
+  wire        rxbyteisaligned0,     rxbyteisaligned1;
+
+  wire        usrclk0,              usrclk1;
+  wire [1:0]  txcharisk0,           txcharisk1;
+  wire [15:0] txdata0,              txdata1;
+  wire [1:0]  rxcharisk0,           rxcharisk1;
+  wire [15:0] rxdata0,              rxdata1;
+  wire [1:0]  rxdisperr0,           rxdisperr1;
+  wire [1:0]  rxnotintable0,        rxnotintable1;
+
+  wire [2:0]  rxbufstatus0,         rxbufstatus1;
+
+  wire        rxn0, rxp0,           rxn1,rxp1;
+  wire        txn0, txp0,           txn1,txp1;
+
   wire        fail0,                fail1;
-  
   wire [15:0] latency_min0,         latency_min1;
   wire [15:0] latency_max0,         latency_max1;
 
-  integer     cnt_tries;
-  
   //--------
   // Clocks
   //--------
@@ -210,7 +211,7 @@ module main;
     .rxdisperr_o        (rxdisperr0),
     .rxnotintable_o     (rxnotintable0),
     .rxbyteisaligned_o  (rxbyteisaligned0),
-    .rxbyterealign_o    (rxbyterealign0),
+    .rxbyterealign_o    (),
     .rxencommaalign_i   (rxencommaalign0),
     .rxbufstatus_o      (rxbufstatus0),
     .rxdata_o           (rxdata0),
@@ -249,7 +250,7 @@ module main;
     .rxdisperr_o        (rxdisperr1),
     .rxnotintable_o     (rxnotintable1),
     .rxbyteisaligned_o  (rxbyteisaligned1),
-    .rxbyterealign_o    (rxbyterealign1),
+    .rxbyterealign_o    (),
     .rxencommaalign_i   (rxencommaalign1),
     .rxbufstatus_o      (rxbufstatus1),
     .rxdata_o           (rxdata1),
