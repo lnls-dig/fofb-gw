@@ -28,15 +28,15 @@ module main;
   //------------
   // Parameters
   //------------
+  localparam SIMULATION_TIME = 150000;            // [ns]
   localparam REFCLK0_PERIOD = 8.0;                // [ns]
   localparam USRCLK0_PERIOD = REFCLK0_PERIOD/2.5; // [ns]
   localparam REFCLK1_PERIOD = 8.0*(1+1e-4);       // [ns]
   localparam USRCLK1_PERIOD = REFCLK1_PERIOD/2.5; // [ns]
-  localparam INITCLK_PERIOD = 10.0;               // [ns]
+
   localparam BLIND_PERIOD = 10;                   // [usrclk cycles]
-  localparam PLLRST_PERIOD = 2500;                // [refclk cycles]
   localparam IDLE_PERIOD = 193;                   // [usrclk cycles]
-  localparam NUM_TRIES = 1;
+
   localparam NUM_SUCCESFUL_DATA = 1000;
   localparam IDLE = 16'h95bc;
   localparam IDLE_K = 2'b01;
@@ -93,24 +93,21 @@ module main;
   // Resets and Simulation control
   //------------------------------
   initial begin
-    // Keep reseting the whole design by NUM_TRIES times
-    for (cnt_tries = 1; cnt_tries <= NUM_TRIES; cnt_tries = cnt_tries + 1) begin
-      if (cnt_tries > 1) $display("Reset try #%.3d...", cnt_tries);
-      if (fail0) pll_rst0 = 1;
-      if (fail1) pll_rst1 = 1;
-      #(200*REFCLK0_PERIOD);
-      pll_rst0 = 0;
-      pll_rst1 = 0;
-      #((PLLRST_PERIOD-200)*REFCLK0_PERIOD);
+    pll_rst0 = 1;
+    pll_rst1 = 1;
+    #(200*REFCLK0_PERIOD);
+    pll_rst0 = 0;
+    pll_rst1 = 0;
+    #(SIMULATION_TIME - 200*REFCLK0_PERIOD);
 
-      if (!fail0 && !fail1) begin
-        $display("TX1-RX0 latency [ns]: %d (min) - %d (max).", latency_min0, latency_max0);
-        $display("TX0-RX1 latency [ns]: %d (min) - %d (max).", latency_min1, latency_max1);
-        $display("PASS");
-        $finish;
-      end
+    if (!fail0 && !fail1) begin
+      $display("TX1-RX0 latency [ns]: %d (min) - %d (max).", latency_min0, latency_max0);
+      $display("TX0-RX1 latency [ns]: %d (min) - %d (max).", latency_min1, latency_max1);
+      $display("PASS");
     end
-    $display("FAIL");
+    else begin
+      $display("FAIL");
+    end
     $finish;
   end
 
