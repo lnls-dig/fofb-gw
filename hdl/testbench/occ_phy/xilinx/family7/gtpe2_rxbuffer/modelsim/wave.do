@@ -58,8 +58,6 @@ add wave -noupdate -divider {Design Validation #1}
 add wave -noupdate -radix decimal /main/latency_min1
 add wave -noupdate -radix decimal /main/latency_max1
 add wave -noupdate /main/fail1
-add wave -noupdate -divider {Design Validation (General)}
-add wave -noupdate -radix decimal /main/cnt_tries
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {3578778135 fs} 0}
 quietly wave cursor active 1
@@ -77,4 +75,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 fs} {21 us}
+WaveRestoreZoom {0 fs} {150000 ns}
