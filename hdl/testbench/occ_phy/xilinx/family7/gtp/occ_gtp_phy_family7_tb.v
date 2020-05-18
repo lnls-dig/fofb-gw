@@ -48,9 +48,6 @@ module main;
   reg         refclkp0 = 0,         refclkp1 = 0;
   reg         refclkn0 = 0,         refclkn1 = 0;
   reg         pll_rst0 = 0,         pll_rst1 = 0;
-  reg         rdy0     = 0,         rdy1     = 0;
-  reg         rx_rst0  = 0,         rx_rst1  = 0;
-  reg         tx_rst0  = 0,         tx_rst1  = 0;
   wire        rx_rdy0,              rx_rdy1;
   wire        tx_rdy0,              tx_rdy1;
 
@@ -184,12 +181,12 @@ module main;
     .pad_refclkn_i      (refclkn0),
     .pad_refclkp_i      (refclkp0),    
     .rst_i              (pll_rst0),
-    .tx_rst_i           (tx_rst0),
+    .tx_rst_i           (1'b0),
     .tx_clk_o           (tx_clk0),
     .tx_data_i          (tx_data0),
     .tx_k_i             (tx_k0),
     .tx_rdy_o           (tx_rdy0),
-    .rx_rst_i           (rx_rst0),
+    .rx_rst_i           (1'b0),
     .rx_clk_o           (rx_clk0),
     .rx_data_o          (rx_data0),
     .rx_k_o             (rx_k0),
@@ -212,12 +209,12 @@ module main;
     .pad_refclkn_i      (refclkn1),
     .pad_refclkp_i      (refclkp1),    
     .rst_i              (pll_rst1),
-    .tx_rst_i           (tx_rst1),
+    .tx_rst_i           (1'b0),
     .tx_clk_o           (tx_clk1),
     .tx_data_i          (tx_data1),
     .tx_k_i             (tx_k1),
     .tx_rdy_o           (tx_rdy1),
-    .rx_rst_i           (rx_rst1),
+    .rx_rst_i           (1'b0),
     .rx_clk_o           (rx_clk1),
     .rx_data_o          (rx_data1),
     .rx_k_o             (rx_k1),
