@@ -20,6 +20,6 @@ log -r /*
 set StdArithNoWarnings 1
 set NumericStdNoWarnings 1
 radix -hexadecimal
-run all
+run -all
 wave zoomfull
 radix -hexadecimal

@@ -12,8 +12,6 @@ add wave -noupdate /main/rx_rdy0
 add wave -noupdate /main/rx_rdy1
 add wave -noupdate /main/tx_rdy0
 add wave -noupdate /main/tx_rdy1
-add wave -noupdate /main/rdy0
-add wave -noupdate /main/rdy1
 add wave -noupdate -divider {Comma Alignment}
 add wave -noupdate /main/rx_resync0
 add wave -noupdate /main/rx_resync1
@@ -37,7 +35,7 @@ add wave -noupdate -divider {Design Validation #0}
 add wave -noupdate -radix decimal /main/latency_min0
 add wave -noupdate -radix decimal /main/latency_min1
 add wave -noupdate -radix decimal /main/latency_max0
-add wave -noupdate -radix decimal /main/latency_max1a
+add wave -noupdate -radix decimal /main/latency_max1
 add wave -noupdate /main/fail0
 add wave -noupdate /main/fail1
 TreeUpdate [SetDefaultTree]
