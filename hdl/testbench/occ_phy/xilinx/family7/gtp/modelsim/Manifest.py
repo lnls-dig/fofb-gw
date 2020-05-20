@@ -10,6 +10,6 @@ include_dirs = [ "..","../../../../../../sim" ]
 modules = {
     "local" : [
         "..",
-        "../../../../../../platform/xilinx/occ_phy",
+        "../../../../../..",
     ]
 }
