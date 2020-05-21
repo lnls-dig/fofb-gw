@@ -43,8 +43,7 @@ generic
 (
   g_SIMULATION        : string               := "FALSE";
   g_NUM_CHANNELS      : integer range 1 to 4 := 1;          -- TODO: g_NUM_CHANNELS should range from 1 to 4
-  g_REFCLK            : string               := "REFCLK0";  -- TODO: select among "REFCLK0", "REFCLK1", "EASTREFCLK0", "EASTREFCLK1", "WESTREFCLK0", "WESTREFCLK1"
-  g_PHYSICAL_LAYER    : string               := "SFP"       -- TODO: select among "SFP" or "BACKPLANE"
+  g_REFCLK            : string               := "REFCLK0"   -- TODO: select among "REFCLK0", "REFCLK1", "EASTREFCLK0", "EASTREFCLK1", "WESTREFCLK0", "WESTREFCLK1"
 );
 port
 (
@@ -277,8 +276,8 @@ begin
     PMA_RSV4                        => "0000",
     RX_BIAS_CFG                     => "0000111100110011",
     DMONITOR_CFG                    => x"000A00",
-    RX_CM_SEL                       => "01",   -- TODO: check physical interface
-    RX_CM_TRIM                      => "0000", -- TODO: check physical interface / AFC-timing uses 1010
+    RX_CM_SEL                       => "01",
+    RX_CM_TRIM                      => "0000",
     RX_DEBUG_CFG                    => "00000000000000",
     RX_OS_CFG                       => "0000010000000",
     TERM_RCAL_CFG                   => "100001000010000",
@@ -435,8 +434,8 @@ begin
     RXLPM_HF_CFG2                   => "01010",
     RXLPM_HF_CFG3                   => "0000",
     RXLPM_HOLD_DURING_EIDLE         => '0',
-    RXLPM_INCM_CFG                  => '0', -- TODO: check physical interface
-    RXLPM_IPCM_CFG                  => '1', -- TODO: check physical interface
+    RXLPM_INCM_CFG                  => '0',
+    RXLPM_IPCM_CFG                  => '1',
     RXLPM_LF_CFG                    => "000000001111110000",
     RXLPM_LF_CFG2                   => "01010",
     RXLPM_OSINT_CFG                 => "100",
@@ -451,7 +450,7 @@ begin
     TXPI_INVSTROBE_SEL              => '0',
     TXPI_PPMCLK_SEL                 => "TXUSRCLK2",
     TXPI_PPM_CFG                    => x"00",
-    TXPI_SYNFREQ_PPM                => "001", -- TODO: check this. Aurora and many other projects use 000, but gt wizard generated 001
+    TXPI_SYNFREQ_PPM                => "001",
     -- Loopback
     LOOPBACK_CFG                    => '0',
     PMA_LOOPBACK_CFG                => '0',
