@@ -1,5 +1,6 @@
 modules =  {
     "local" : [
         "occ",
+        "fabric",
     ],
 }
