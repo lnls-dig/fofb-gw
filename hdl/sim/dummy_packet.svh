@@ -102,7 +102,8 @@ class DummyPacketGenerator;
     static const int PAYLOAD      = (1<<5);
     static const int SEQ_PAYLOAD  = (1<<7);
     static const int EVEN_LENGTH        = (1<<8);
-    static const int ALL = PAYLOAD;
+    static const int POW2_LENGTH        = (1<<9);
+    static const int ALL = PAYLOAD | SEQ_PAYLOAD | POW2_LENGTH;
 
     protected int r_flags;
 
@@ -159,7 +160,9 @@ class DummyPacketGenerator;
         else
             len = $dist_uniform(seed, min_size, max_size);
 
-        if((len & 1) && (r_flags & EVEN_LENGTH))
+        if(r_flags & POW2_LENGTH)
+            len = SimUtils.round_down_pow2(len);
+        else if((len & 1) && (r_flags & EVEN_LENGTH))
             len++;
 
         if(r_flags & PAYLOAD)
