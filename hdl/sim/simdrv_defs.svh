@@ -110,7 +110,13 @@ class CSimUtils;
     static function automatic int flog2(int n);
         int tmp = clog2(n);
 
-        return tmp - (!((n & (n-1)) == 0));
+        return tmp - (((n & (n-1)) == 0)? 0 : 1);
+    endfunction
+
+    static function automatic int round_down_pow2(int n);
+        int tmp = flog2(n);
+
+        return (1 << tmp);
     endfunction
 
 endclass // CSimUtils
