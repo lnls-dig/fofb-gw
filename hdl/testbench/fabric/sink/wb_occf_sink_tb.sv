@@ -39,8 +39,8 @@ module wb_occf_sink_svwrap (
         .g_addr_width(4),
         .g_data_width(128)
     ) cmp_occf_src (
-        clk_sys_i,
-        rst_n_i
+        .clk_i      (clk_i),
+        .rst_n_i    (rst_n_i)
     );
 
     wire [127:0] data;
