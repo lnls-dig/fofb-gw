@@ -97,7 +97,6 @@ module wb_occf_sink_tb;
     //------------
     // Parameters
     //------------
-    localparam SIMULATION_TIME = 150000;            // [ns]
 
     //---------
     // Signals
@@ -109,14 +108,6 @@ module wb_occf_sink_tb;
         .clk_sys_o         (sys_clk),
         .sys_rstn_o        (sys_rstn)
     );
-
-    //-------------------------------
-    // Resets and Simulation control
-    //------------------------------
-    initial begin
-        #(SIMULATION_TIME);
-        $finish;
-    end
 
     // ----
     // DUT
