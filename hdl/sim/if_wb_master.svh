@@ -72,7 +72,7 @@ interface IWishboneMaster
 
     function automatic logic[g_addr_width-1:0] gen_addr(large_word_t addr, int xfer_size);
         if (!is_pow2(xfer_size))
-            $error("IWishbone: xfer_size is not power of 2 [%d\n]", xfer_size);
+            $error("IWishbone: xfer_size is not power of 2 [%d]\n", xfer_size);
 
         if(settings.addr_gran == WORD)
             case(g_data_width)
@@ -81,7 +81,7 @@ interface IWishboneMaster
                 32: return addr >> 2;
                 64: return addr >> 3;
                 128: return addr >> 4;
-                default: $error("IWishbone: invalid WB data bus width [%d bits\n]", g_data_width);
+                default: $error("IWishbone: invalid WB data bus width [%d bits]\n", g_data_width);
             endcase // case (xfer_size)
         else
             return addr;
@@ -115,7 +115,7 @@ interface IWishboneMaster
         logic[g_data_width-1:0] tmp;
 
         if (!is_pow2(xfer_size))
-            $error("IWishbone: xfer_size is not power of 2 [%d\n]", xfer_size);
+            $error("IWishbone: xfer_size is not power of 2 [%d]\n", xfer_size);
 
         tmp  = data << (8 * (dbytes - (xfer_size - 1 - (addr & (xfer_size-1)))));
 
@@ -129,7 +129,7 @@ interface IWishboneMaster
         int rem;
 
         if (!is_pow2(xfer_size))
-            $error("IWishbone: xfer_size is not power of 2 [%d\n]", xfer_size);
+            $error("IWishbone: xfer_size is not power of 2 [%d]\n", xfer_size);
 
         //  $display("decode: a %x d %x xs %x", addr, data ,xfer_size);
 
