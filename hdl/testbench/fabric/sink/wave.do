@@ -1,7 +1,6 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
 add wave -noupdate -divider Testbench
-add wave -noupdate /wb_occf_sink_tb/SIMULATION_TIME
 add wave -noupdate /wb_occf_sink_tb/sys_clk
 add wave -noupdate /wb_occf_sink_tb/sys_rstn
 add wave -noupdate -divider DUT
@@ -84,7 +83,7 @@ add wave -noupdate /wb_occf_sink_tb/DUT/cmp_wb_occf_sink/sof_o
 add wave -noupdate /wb_occf_sink_tb/DUT/cmp_wb_occf_sink/snk_in
 add wave -noupdate /wb_occf_sink_tb/DUT/cmp_wb_occf_sink/snk_out
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {125000000 fs} 0}
+WaveRestoreCursors {{Cursor 1} {1126963351 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -100,4 +99,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 fs} {530235422 fs}
+WaveRestoreZoom {0 fs} {10500 ns}
