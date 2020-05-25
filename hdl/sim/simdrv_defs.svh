@@ -97,6 +97,22 @@ class CSimUtils;
         return tmp;
     endfunction // unpack
 
+    static function automatic int clog2(int n);
+        int tmp = 0;
+        int val = n - 1;
+
+        for (tmp = 0; val>0; tmp++)
+            val = val>>1;
+
+        return tmp;
+    endfunction
+
+    static function automatic int flog2(int n);
+        int tmp = clog2(n);
+
+        return tmp - (!((n & (n-1)) == 0));
+    endfunction
+
 endclass // CSimUtils
 
 static CSimUtils SimUtils;
