@@ -126,11 +126,11 @@ module wb_occf_sink_tb;
         tmpl = new;
 
         gen.set_template(tmpl);
-        gen.set_size(4, 16);
+        gen.set_size(16, 1024);
 
         for(i=0; i<n_packets; i++)
         begin
-            pkt = gen.gen(16);
+            pkt = gen.gen();
 
             q.push_back(pkt);
             src.send(pkt);
