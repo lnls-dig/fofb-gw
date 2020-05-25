@@ -30,66 +30,6 @@
 `include "wb_packet_source.svh"
 `include "wb_packet_sink.svh"
 
-//`define WIRE_WB_SINK(iface, prefix) \
-//.prefix``_adr_i(iface``.adr), \
-//.prefix``_dat_i(iface``.dat_o), \
-//.prefix``_stb_i(iface``.stb), \
-//.prefix``_sel_i(iface``.sel), \
-//.prefix``_cyc_i(iface``.cyc), \
-//.prefix``_ack_o(iface``.ack), \
-//.prefix``_err_o(iface``.err), \
-//.prefix``_stall_o(iface``.stall)
-//
-//`define WIRE_WB_SOURCE(iface, prefix) \
-//.prefix``_adr_o(iface``.adr), \
-//.prefix``_dat_o(iface``.dat_i), \
-//.prefix``_stb_o(iface``.stb), \
-//.prefix``_sel_o(iface``.sel), \
-//.prefix``_cyc_o(iface``.cyc), \
-//.prefix``_ack_i(iface``.ack), \
-//.prefix``_err_i(iface``.err), \
-//.prefix``_stall_i(iface``.stall)
-//
-//`define WIRE_OCCF_SRC(dst, src) \
-//assign dst``_o.cyc = src``.cyc; \
-//assign dst``_o.stb = src``.stb; \
-//assign dst``_o.adr = src``.adr; \
-//assign dst``_o.dat = src``.dat_o; \
-//assign dst``_o.sel = src``.sel; \
-//assign src``.ack = dst``_i.ack; \
-//assign src``.err = dst``_i.err; \
-//assign src``.stall = dst``_i.stall;
-//
-//`define WIRE_OCCF_SRC_I(dst, src, i) \
-//assign dst``_o[i].cyc = src``.cyc; \
-//assign dst``_o[i].stb = src``.stb; \
-//assign dst``_o[i].adr = src``.adr; \
-//assign dst``_o[i].dat = src``.dat_o; \
-//assign dst``_o[i].sel = src``.sel; \
-//assign src``.ack = dst``_i[i].ack; \
-//assign src``.err = dst``_i[i].err; \
-//assign src``.stall = dst``_i[i].stall;
-//
-//`define WIRE_OCCF_SNK(dst, src) \
-//assign dst``.cyc = src``_i.cyc; \
-//assign dst``.stb = src``_i.stb; \
-//assign dst``.adr = src``_i.adr; \
-//assign dst``.dat_i = src``_i.dat; \
-//assign dst``.sel = src``_i.sel; \
-//assign src``_o.ack = dst``.ack; \
-//assign src``_o.err = dst``.err; \
-//assign src``_o.stall = dst``.stall;
-//
-//`define WIRE_OCCF_SNK_I(dst, src, i) \
-//assign dst``.cyc = src``_i[i].cyc; \
-//assign dst``.stb = src``_i[i].stb; \
-//assign dst``.adr = src``_i[i].adr; \
-//assign dst``.dat_i = src``_i[i].dat; \
-//assign dst``.sel = src``_i[i].sel; \
-//assign src``_o[i].ack = dst``.ack; \
-//assign src``_o[i].err = dst``.err; \
-//assign src``_o[i].stall = dst``.stall;
-
 module wb_occf_sink_svwrap (
     input clk_i,
     input rst_n_i
@@ -102,25 +42,6 @@ module wb_occf_sink_svwrap (
         clk_sys_i,
         rst_n_i
     );
-
-    //IWishboneSlave #(
-    //    .g_addr_width(4),
-    //    .g_data_width(128)
-    //) cmp_occf_snk (
-    //    clk_sys_i,
-    //    rst_n_i
-    //);
-
-    //t_occf_source_out occf_src_o;
-    //t_occf_source_in  occf_src_i;
-    //t_occf_sink_out   occf_snk_o;
-    //t_occf_sink_in    occf_snk_i;
-
-    //`WIRE_OCCF_SNK(cmp_occf_snk, occf_snk);
-
-    //`WIRE_OCCF_SRC(occf_src, cmp_occf_src);
-    //assign occ_snk_i = occ_src_o;
-    //assign occ_snk_o = occ_src_i;
 
     wire [127:0] data;
     wire [3:0] addr;
@@ -159,14 +80,12 @@ module wb_occf_sink_svwrap (
     );
 
     WBPacketSource occf_src;
-    //WBPacketSink occf_snk;
 
     initial begin
         @(posedge rst_n_i);
         @(posedge clk_i);
 
         occf_src  = new(cmp_occf_src.get_accessor());
-        //occf_snk  = new(cmp_occf_snk.get_accessor());
 
         cmp_occf_src.settings.cyc_on_stall = 1;
     end
