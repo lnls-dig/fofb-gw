@@ -49,7 +49,7 @@ module wb_occf_sink_svwrap (
     wire dvalid;
     wire sof;
     wire eof;
-    wire dreq;
+    wire dreq = 1'b1;
 
     wb_occf_sink #(
         .g_FIFO_DEPTH          (8),
