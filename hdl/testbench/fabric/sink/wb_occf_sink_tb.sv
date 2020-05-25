@@ -139,7 +139,7 @@ module wb_occf_sink_tb;
 
         for(i=0; i<n_packets; i++)
         begin
-            pkt = gen.gen();
+            pkt = gen.gen(16);
 
             q.push_back(pkt);
             src.send(pkt);
