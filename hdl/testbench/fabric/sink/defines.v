@@ -7,7 +7,7 @@
 //`define CLK_SYS_PERIOD 10000.00 //ps
 
 // Reset Delay, in Clock Cycles
-`define RST_SYS_DELAY  		5000
+`define RST_SYS_DELAY  		10
 
 /*******************************
  * Wishbone definitions
