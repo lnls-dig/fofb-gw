@@ -186,6 +186,62 @@ package wb_occf_pkg is
   );
   end component;
 
+  component xwb_occf_source
+  generic (
+    g_FIFO_DEPTH                             : natural := 8;
+    g_WITH_FIFO_INFERRED                     : boolean := true
+  );
+  port (
+    clk_i                                    : in std_logic;
+    rst_n_i                                  : in std_logic;
+
+    -- Wishbone Fabric Interface I/O
+    src_i                                    : in  t_occf_source_in;
+    src_o                                    : out t_occf_source_out;
+
+    -- Decoded & buffered logic
+    addr_i                                   : in  std_logic_vector(c_OCCF_ADDRESS_WIDTH-1 downto 0);
+    data_i                                   : in  std_logic_vector(c_OCCF_DATA_WIDTH-1 downto 0);
+    dvalid_i                                 : in  std_logic;
+    sof_i                                    : in  std_logic;
+    eof_i                                    : in  std_logic;
+    bytesel_i                                : in  std_logic_vector((c_OCCF_DATA_WIDTH/8)-1 downto 0);
+    dreq_o                                   : out std_logic
+    );
+  end component;
+
+  component wb_occf_source
+  generic (
+    g_FIFO_DEPTH                             : natural := 8;
+    g_WITH_FIFO_INFERRED                     : boolean := true
+  );
+  port (
+    clk_i                                    : in std_logic;
+    rst_n_i                                  : in std_logic;
+
+    -- Wishbone Fabric Interface I/O
+    src_dat_o                                : out std_logic_vector(c_OCCF_DATA_WIDTH-1 downto 0);
+    src_adr_o                                : out std_logic_vector(c_OCCF_ADDRESS_WIDTH-1 downto 0);
+    src_sel_o                                : out std_logic_vector((c_OCCF_DATA_WIDTH/8)-1 downto 0);
+    src_cyc_o                                : out std_logic;
+    src_stb_o                                : out std_logic;
+    src_we_o                                 : out std_logic;
+    src_stall_i                              : in  std_logic;
+    src_ack_i                                : in  std_logic;
+    src_err_i                                : in  std_logic;
+    src_rty_i                                : in  std_logic;
+
+    -- Decoded & buffered fabric
+    addr_i                                   : in  std_logic_vector(c_OCCF_ADDRESS_WIDTH-1 downto 0);
+    data_i                                   : in  std_logic_vector(c_OCCF_DATA_WIDTH-1 downto 0);
+    dvalid_i                                 : in  std_logic;
+    sof_i                                    : in  std_logic;
+    eof_i                                    : in  std_logic;
+    bytesel_i                                : in  std_logic_vector((c_OCCF_DATA_WIDTH/8)-1 downto 0);
+    dreq_o                                   : out std_logic
+    );
+  end component;
+
 end wb_occf_pkg;
 
 package body wb_occf_pkg is
