@@ -103,7 +103,7 @@ class DummyPacketGenerator;
     static const int SEQ_PAYLOAD  = (1<<7);
     static const int EVEN_LENGTH        = (1<<8);
     static const int POW2_LENGTH        = (1<<9);
-    static const int ALL = PAYLOAD | SEQ_PAYLOAD | POW2_LENGTH;
+    static const int ALL = SEQ_PAYLOAD | POW2_LENGTH;
 
     protected int r_flags;
 
