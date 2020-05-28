@@ -222,7 +222,7 @@ begin  -- rtl
   post_data     <= fifo_dout_reg(c_DATA_MSB downto c_DATA_LSB);
   post_addr     <= fifo_dout_reg(c_ADDR_MSB downto c_ADDR_LSB);
 
-  sof_o     <= post_sof ;
+  sof_o     <= post_sof;
   dvalid_o  <= post_dvalid ;
   eof_o     <= post_eof;
   bytesel_o <= post_bytesel;
