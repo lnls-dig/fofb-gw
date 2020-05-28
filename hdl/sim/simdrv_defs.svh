@@ -9,12 +9,12 @@ typedef uint64_t u64_array_t[];
 typedef byte byte_array_t[];
 
 `define LARGE_WORD_WIDTH 128
-typedef bit [`LARGE_WORD_WIDTH] large_word_t;
+typedef bit [`LARGE_WORD_WIDTH-1:0] large_word_t;
 
 typedef large_word_t lword_array_t[];
 
 `define SEL_WORD_WIDTH (`LARGE_WORD_WIDTH/8)
-typedef bit [`SEL_WORD_WIDTH] sel_word_t;
+typedef bit [`SEL_WORD_WIDTH-1:0] sel_word_t;
 
 typedef sel_word_t sword_array_t[];
 
