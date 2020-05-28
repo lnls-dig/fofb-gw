@@ -50,6 +50,9 @@ virtual class CBusAccessor;
 endclass // CBusAccessor
 
 class CSimUtils;
+
+    static int seed = 0;
+
     static function automatic lword_array_t pack(byte x[], int size, int big_endian = 1);
         lword_array_t tmp;
         int i, j;
@@ -118,6 +121,17 @@ class CSimUtils;
 
         return (1 << tmp);
     endfunction
+
+    static function automatic int probability_hit(real prob);
+        real rand_val;
+        rand_val    = real'($dist_uniform(seed, 0, 1000)) / 1000.0;
+
+        if(rand_val < prob)
+            return 1;
+        else
+            return 0;
+
+    endfunction // probability_hit
 
 endclass // CSimUtils
 

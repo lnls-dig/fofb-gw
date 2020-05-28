@@ -130,18 +130,5 @@ virtual class CWishboneAccessor extends CBusAccessor;
 
 endclass // CWishboneAccessor
 
-static int seed = 0;
-
-function automatic int probability_hit(real prob);
-    real rand_val;
-    rand_val    = real'($dist_uniform(seed, 0, 1000)) / 1000.0;
-
-    if(rand_val < prob)
-        return 1;
-    else
-        return 0;
-
-endfunction // probability_hit
-
 
 `endif //  `ifndef IF_WISHBONE_ACCESSOR_SV

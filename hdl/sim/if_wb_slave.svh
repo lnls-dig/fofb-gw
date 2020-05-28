@@ -140,7 +140,7 @@ interface IWishboneSlave
 
         //      $display("stallr: %d\n", stall_remaining);
 
-        if(settings.gen_random_stalls && (probability_hit(settings.stall_prob) || stall_remaining > 0))
+        if(settings.gen_random_stalls && (SimUtils.probability_hit(settings.stall_prob) || stall_remaining > 0))
         begin
             if(stall_remaining == 0)
                 stall_remaining = $dist_uniform(seed,
@@ -202,7 +202,7 @@ interface IWishboneSlave
             c_queue.push_back(current_cycle);
         end
 
-        if(cyc && settings.gen_random_errors && probability_hit(settings.error_prob))
+        if(cyc && settings.gen_random_errors && SimUtils.probability_hit(settings.error_prob))
             err <= 1;
         else
             err <= 0;

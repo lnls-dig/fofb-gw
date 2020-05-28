@@ -265,7 +265,7 @@ interface IWishboneMaster
                 break;
             end
 
-            if (!stall && settings.gen_random_throttling && probability_hit(settings.throttle_prob)) begin
+            if (!stall && settings.gen_random_throttling && SimUtils.probability_hit(settings.throttle_prob)) begin
                 stb   <= 1'b0;
                 we    <= 1'b0;
                 @(posedge clk_i);
